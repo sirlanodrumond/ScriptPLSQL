@@ -1,0 +1,150 @@
+CREATE OR REPLACE VIEW V_SLF_CLIENTECARGAS2 AS
+SELECT C.GLB_GRUPOECONOMICO_CODIGO,
+       gp.glb_grupoeconomico_nome descgrupo,
+       C.GLB_CLIENTE_CGCCPFCODIGO,
+       C.SLF_CONTRATO_CODIGO,
+       ct.slf_contrato_dtinicio dtinicio,
+       ct.slf_contrato_dtfinal dtfinal,
+       ct.slf_contrato_descricao desccontrato,
+       C.SLF_CLIENTECARGAS_SEQEXEC,
+       C.SLF_CLIENTECARGAS_VIGENCIA,
+       C.SLF_CLIENTECARGAS_ATIVO,
+       C.FCF_TPCARGA_CODIGO,
+       C.fcf_tpcarga_codigo || '-' || tc.fcf_tpcarga_descricao Tpcarga,
+       C.FCF_TPCARGA_CODIGOPESQ,
+       C.fcf_tpcarga_codigopesq || '-' || tcp.fcf_tpcarga_descricao TpcargaPesq,
+       C.SLF_TPFRETE_CODIGO,
+       C.slf_tpfrete_codigo || '-' || FR.SLF_TPFRETE_DESCRICAO tpfretepesq,
+       fr.slf_tpfrete_tpcodorigem tporigem,
+       fr.slf_tpfrete_tpcoddestino tpdestino,
+       C.SLF_CLIENTECARGAS_RATEIA,
+       C.SLF_CLIENTECARGAS_QTDENOTACOL,
+       C.SLF_TPRATEIO_CODIGO,
+       c.slf_clientecargas_rateiacol,
+       c.slf_tprateio_codigocol,
+       C.SLF_TPAGRUPA_CODIGO,
+       C.SLF_CLIENTECARGAS_PROCEDURE,
+       C.SLF_CLIENTECARGAS_PMINIMO,
+       C.SLF_CLIENTECARGAS_PESAGEMMAX,
+       C.SLF_CLIENTECARGAS_AGCTRC,
+       C.SLF_CLIENTECARGAS_QTDECTRC,
+       C.SLF_CLIENTECARGAS_AGNF,
+       C.SLF_CLIENTECARGAS_QTDENF,
+       C.SLF_CLIENTECARGAS_PRIOREXQM,
+       nvl(C.SLF_CLIENTECARGAS_PERCNTEX,1) + 1 SLF_CLIENTECARGAS_PERCNTEX,
+       c.slf_clientecargas_mudacarregex,
+       nvl(C.SLF_CLIENTECARGAS_PERCNTQM,1) + 1 SLF_CLIENTECARGAS_PERCNTQM,
+       c.slf_clientecargas_mudacarregqm,
+       nvl(C.SLF_CLIENTECARGAS_PERCNTOUT,1) + 1 SLF_CLIENTECARGAS_PERCNTOUT,
+       nvl(C.SLF_CLIENTECARGAS_PERCNTTRA,1) + 1 SLF_CLIENTECARGAS_PERCNTTRA,
+       nvl(C.SLF_CLIENTECARGAS_REDUTOR,1) + 1 SLF_CLIENTECARGAS_REDUTOR,
+       C.SLF_CLIENTECARGAS_FORMULARIOQM,
+       C.SLF_CLIENTECARGAS_FORMULARIOEX,
+       C.SLF_CLIENTECARGAS_QPCOLCTRC,
+       C.SLF_CLIENTECARGAS_QPCOLNF,
+       C.SLF_CLIENTECARGAS_FORMULAFRTX,
+       C.SLF_CLIENTECARGAS_FORMULAFRTVL,
+       C.SLF_CLIENTECARGAS_FORMULAPDTX,
+       C.SLF_CLIENTECARGAS_FORMULAPDVL,
+       C.SLF_CLIENTECARGAS_FORMULAFRTKM,
+       C.SLF_CLIENTECARGAS_FIXAORIGEM,
+       C.SLF_CLIENTECARGAS_FIXADESTINO,
+       C.SLF_CLIENTECARGAS_SOTRANSF,
+       C.SLF_CLIENTECARGAS_USAVEICULO,
+       C.SLF_CLIENTECARGAS_PESQVEICULO,
+       DECODE(C.slf_clientecargas_usaveiculo,'S',DECODE(C.slf_clientecargas_pesqveiculo,'C','COLETA',
+                                                                                        'F','FAIXA',
+                                                                                        'G','GRID FIFO'),
+                                                                                        '')  pesquisaveiculo,
+       C.SLF_CLIENTECARGAS_LIMITECTE,
+       C.SLF_CLIENTECARGAS_LIMITENFSE,
+       C.SLF_CLIENTECARGAS_USAFAIXAKM,
+       C.SLF_CLIENTECARGAS_USAFAIXAPESO,
+       C.SLF_CLIENTECARGAS_USAFAIXAVG,
+       C.SLF_CLIENTECARGAS_USAFAIXAKMC,
+       C.SLF_CLIENTECARGAS_KMMINIMO,
+       C.SLF_CLIENTECARGAS_COBRACOLETA,
+       C.SLF_CLIENTECARGAS_PARASEMPCC,
+       C.FCF_TPCARGA_CODIGOCOL,
+       C.fcf_tpcarga_codigocol || '-' || tcc.fcf_tpcarga_descricao TpcargaCol,
+       C.SLF_TPFRETE_CODIGOCOL,
+       C.slf_tpfrete_codigocol || '-' || frc.slf_tpfrete_descricao tpfretepesqCol,
+       frc.slf_tpfrete_tpcodorigem tporigemColeta,
+       frc.slf_tpfrete_tpcoddestino tpdestinoColeta,
+       C.SLF_CLIENTECARGAS_FORCOBCOLETA,
+       C.SLF_CLIENTECARGAS_AGRPORCOLETA,
+       C.SLF_CLIENTECARGAS_FORMULACOLTX,
+       C.SLF_CLIENTECARGAS_FORMULACOLVL,
+       C.SLF_CLIENTECARGAS_FORMULACOLKM,
+       C.SLF_CLIENTECARGAS_USAFAIXAPSOC,
+       C.SLF_CLIENTECARGAS_USAFAIXAVGC,
+       C.SLF_CLIENTECARGAS_USAVEICULOC,
+       C.SLF_CLIENTECARGAS_PESQVEICULOC,
+       DECODE(C.slf_clientecargas_usaveiculoc,'S',DECODE(C.slf_clientecargas_pesqveiculoc,'C','COLETA',
+                                                                                          'F','FAIXA',
+                                                                                          'G','GRID FIFO'),
+                                                                                          '')  pesqveiculoc,
+       C.SLF_CLIENTECARGAS_CTEDECOLETA,
+       C.SLF_CLIENTECARGAS_MUDAORIGEMCC,
+       C.SLF_CLIENTECARGAS_DTCADASTRO,
+       R.SLF_CLIENTEREGRAS_VIGENCIA,
+       R.SLF_CLIENTEREGRAS_ATIVO,
+       R.SLF_CLIENTEREGRAS_COLORIG,
+       R.SLF_CLIENTEREGRAS_COLPEDIDO,
+       R.SLF_CLIENTEREGRAS_COLPEDIDOREG,
+       R.SLF_CLIENTEREGRAS_COLAUTORIZA,
+       R.SLF_CLIENTEREGRAS_INFCLI,
+       c.slf_clientecargas_pcobranca SLF_CLIENTEREGRAS_PCOBRANCA,
+       decode(c.slf_clientecargas_pcobranca,'PB','BALANCA',
+                                            'PR','NOTA',
+                                            'PC','CUBADO',
+                                            'PE','EXCEDENTE',c.slf_clientecargas_pcobranca)  pesocobranca,
+       c.slf_clientecargas_baseocupacao SLF_CLIENTEREGRAS_BASEOCUPACAO,
+       c.slf_clientecargas_valorbase SLF_CLIENTEREGRAS_VALORBASE,
+       R.SLF_CLIENTEREGRAS_PBOBRIG,
+       R.SLF_CLIENTEREGRAS_PBARREND,
+       R.SLF_CLIENTEREGRAS_PBDECGRAMAS,
+       R.SLF_CLIENTEREGRAS_TABPED,
+       R.SLF_CLIENTEREGRAS_TABKM,
+       R.SLF_CLIENTEREGRAS_GLOBALIZADO,
+       R.SLF_CLIENTEREGRAS_CRIACOLFIFO,
+       R.SLF_CLIENTEREGRAS_FIMDIGITNOTA,
+       R.SLF_CLIENTEREGRAS_VALEPED,
+       R.SLF_CLIENTEREGRAS_DTCADASTRO,
+       r.slf_clienteregras_obscust,
+       r.slf_clienteregras_obscustvigenciac.slf_clientecargas_pcobranca
+FROM TDVADM.T_SLF_CLIENTECARGAS C,
+     TDVADM.T_SLF_CLIENTEREGRAS R,
+     tdvadm.T_slf_tpfrete FR,
+     tdvadm.T_slf_tpfrete FRC,
+     tdvadm.t_fcf_tpcarga tc,
+     tdvadm.t_fcf_tpcarga tcp,
+     tdvadm.t_fcf_tpcarga tcc,
+     tdvadm.t_glb_grupoeconomico gp,
+     tdvadm.t_slf_contrato ct
+
+WHERE C.GLB_GRUPOECONOMICO_CODIGO = R.GLB_GRUPOECONOMICO_CODIGO (+)
+  AND C.GLB_CLIENTE_CGCCPFCODIGO = R.GLB_CLIENTE_CGCCPFCODIGO (+)
+  AND C.SLF_CONTRATO_CODIGO = R.SLF_CONTRATO_CODIGO (+)
+  AND C.SLF_TPFRETE_CODIGO = FR.slf_tpfrete_codigo (+)
+  and C.slf_tpfrete_codigocol = FRC.SLF_TPFRETE_CODIGO (+)
+  and C.fcf_tpcarga_codigo = tc.fcf_tpcarga_codigo
+  and C.fcf_tpcarga_codigopesq = tcp.fcf_tpcarga_codigo
+  and C.fcf_tpcarga_codigocol = tcc.fcf_tpcarga_codigo (+)
+  and C.glb_grupoeconomico_codigo = gp.glb_grupoeconomico_codigo (+)
+  and C.slf_contrato_codigo = ct.slf_contrato_codigo (+)
+  AND C.SLF_CLIENTECARGAS_VIGENCIA = (SELECT MAX(C1.SLF_CLIENTECARGAS_VIGENCIA)
+                                      FROM TDVADM.T_SLF_CLIENTECARGAS C1
+                                      WHERE C1.GLB_GRUPOECONOMICO_CODIGO = C.GLB_GRUPOECONOMICO_CODIGO
+                                        AND C1.GLB_CLIENTE_CGCCPFCODIGO = C.GLB_CLIENTE_CGCCPFCODIGO
+                                        AND C1.SLF_CONTRATO_CODIGO = C.SLF_CONTRATO_CODIGO
+                                        AND C1.FCF_TPCARGA_CODIGO = C.FCF_TPCARGA_CODIGO
+                                        AND C1.FCF_TPCARGA_CODIGOPESQ = C.FCF_TPCARGA_CODIGOPESQ
+                                        AND C1.SLF_TPFRETE_CODIGO = C.SLF_TPFRETE_CODIGO
+                                        AND C1.SLF_CLIENTECARGAS_ATIVO = 'S')
+  AND R.SLF_CLIENTEREGRAS_VIGENCIA = (SELECT MAX(R1.SLF_CLIENTEREGRAS_VIGENCIA)
+                                      FROM TDVADM.T_SLF_CLIENTEREGRAS R1
+                                      WHERE R1.GLB_GRUPOECONOMICO_CODIGO = R.GLB_GRUPOECONOMICO_CODIGO
+                                        AND R1.GLB_CLIENTE_CGCCPFCODIGO = R.GLB_CLIENTE_CGCCPFCODIGO
+                                        AND R1.SLF_CONTRATO_CODIGO = R.SLF_CONTRATO_CODIGO
+                                        AND R1.SLF_CLIENTEREGRAS_ATIVO = 'S');
