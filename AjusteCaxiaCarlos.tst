@@ -1,7 +1,7 @@
 PL/SQL Developer Test script 3.0
-80
+78
 -- Criado em 06/12/2020 por SIRLANO.DRUMOND 
--- Tste Criado para Baixar contra a TDV, os Vales de Frete não recebidos
+-- Teste Criado para Baixar contra a TDV, os Vales de Frete não recebidos
 -- Anualmente o Carlos Pede para fazer este operacao
 declare 
   pProtocolo tdvadm.t_edi_integra.edi_integra_protocolo%type := '2703972';
@@ -55,8 +55,6 @@ begin
                                                                                                                     '7603160112',
                                                                                                                     '0183312103')
                   */
-                  and lpad(i.edi_integra_col05,6,'0') || lpad(i.edi_integra_col07,3,'0') || i.edi_integra_col08 not in ('1519570792',
-                                                                                                                        '0404960791')
                   and i.edi_integra_col05 is not null
 --                  and i.edi_integra_col14 is not null
                   )
@@ -76,7 +74,7 @@ begin
 
 
     -- Torcar depois para a rotina de LOG
-    dbms_output.put_line(c_msg.vfrete||'-'||c_msg.serie||'-'||c_msg.rota||'-'||c_msg.sq||'- Status-'||vStatus||'- MSG - '||trim(Vmessage)); 
+    dbms_output.put_line(c_msg.vfrete||'-'||c_msg.serie||'-'||c_msg.rota||'-'||c_msg.sq||'-Valor-' || c_msg.SALDO || '-Status-'||vStatus||'-MSG- '||trim(Vmessage)); 
   End Loop; 
 
 end;
